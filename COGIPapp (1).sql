@@ -1,264 +1,178 @@
--- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
---
--- Client :  localhost
--- Généré le :  Mer 29 Août 2018 à 11:31
--- Version du serveur :  5.7.23-0ubuntu0.16.04.1
--- Version de PHP :  7.0.30-0ubuntu0.16.04.1
+-- MySQL Workbench Forward Engineering
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema COGIPapp
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema COGIPapp
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `COGIPapp` DEFAULT CHARACTER SET utf8 ;
+USE `COGIPapp` ;
+
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`personnes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`personnes` (
+  `idpersonnes` INT NOT NULL AUTO_INCREMENT,
+  `nom_has_personne` VARCHAR(45) NULL,
+  `prenom_has_personne` VARCHAR(45) NULL,
+  `telephone_has_personne` VARCHAR(45) NULL,
+  `email_has_personne` VARCHAR(45) NULL,
+  PRIMARY KEY (`idpersonnes`))
+ENGINE = InnoDB;
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`societes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`societes` (
+  `idsocietes` INT NOT NULL AUTO_INCREMENT,
+  `nom_societe` VARCHAR(45) NULL,
+  `adresse_societe` VARCHAR(45) NULL,
+  `pays_societe` VARCHAR(45) NULL,
+  `TVA_societe` VARCHAR(45) NULL,
+  `telephone_societe` VARCHAR(45) NULL,
+  PRIMARY KEY (`idsocietes`))
+ENGINE = InnoDB;
 
---
--- Base de données :  `COGIPapp`
---
 
--- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`factures`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`factures` (
+  `idfactures` INT NOT NULL AUTO_INCREMENT,
+  `numero-facture` VARCHAR(45) NULL,
+  `date-facture` VARCHAR(45) NULL,
+  `objet-facture` VARCHAR(45) NULL,
+  PRIMARY KEY (`idfactures`))
+ENGINE = InnoDB;
 
---
--- Structure de la table `FACTURES`
---
 
-CREATE TABLE `FACTURES` (
-  `idFACTURES` int(11) NOT NULL,
-  `numero-facture` varchar(45) DEFAULT NULL,
-  `date-facture` varchar(45) DEFAULT NULL,
-  `objet-facture` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`type` (
+  `idtype` INT NOT NULL AUTO_INCREMENT,
+  `type_societe` VARCHAR(45) NULL,
+  PRIMARY KEY (`idtype`))
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Structure de la table `PERSONNES`
---
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`personnes_has_factures`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`personnes_has_factures` (
+  `personnes_idpersonnes` INT NOT NULL,
+  `factures_idfactures` INT NOT NULL,
+  PRIMARY KEY (`personnes_idpersonnes`, `factures_idfactures`),
+  INDEX `fk_PERSONNES_has_FACTURES_FACTURES1_idx` (`factures_idfactures` ASC),
+  INDEX `fk_PERSONNES_has_FACTURES_PERSONNES_idx` (`personnes_idpersonnes` ASC),
+  CONSTRAINT `fk_PERSONNES_has_FACTURES_PERSONNES`
+    FOREIGN KEY (`personnes_idpersonnes`)
+    REFERENCES `COGIPapp`.`personnes` (`idpersonnes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PERSONNES_has_FACTURES_FACTURES1`
+    FOREIGN KEY (`factures_idfactures`)
+    REFERENCES `COGIPapp`.`factures` (`idfactures`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE TABLE `PERSONNES` (
-  `idPERSONNES` int(11) NOT NULL,
-  `nom_has_personne` varchar(45) DEFAULT NULL,
-  `prenom_has_personne` varchar(45) DEFAULT NULL,
-  `telephone_has_personne` varchar(45) DEFAULT NULL,
-  `email_has_personne` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`personnes_has_societes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`personnes_has_societes` (
+  `personnes_idpersonnes` INT NOT NULL,
+  `societes_idsocietes` INT NOT NULL,
+  PRIMARY KEY (`personnes_idpersonnes`, `societes_idsocietes`),
+  INDEX `fk_PERSONNES_has_SOCIETES_SOCIETES1_idx` (`societes_idsocietes` ASC),
+  INDEX `fk_PERSONNES_has_SOCIETES_PERSONNES1_idx` (`personnes_idpersonnes` ASC),
+  CONSTRAINT `fk_PERSONNES_has_SOCIETES_PERSONNES1`
+    FOREIGN KEY (`personnes_idpersonnes`)
+    REFERENCES `COGIPapp`.`personnes` (`idpersonnes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PERSONNES_has_SOCIETES_SOCIETES1`
+    FOREIGN KEY (`societes_idsocietes`)
+    REFERENCES `COGIPapp`.`societes` (`idsocietes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Structure de la table `PERSONNES_has_FACTURES`
---
 
-CREATE TABLE `PERSONNES_has_FACTURES` (
-  `PERSONNES_idPERSONNES` int(11) NOT NULL,
-  `FACTURES_idFACTURES` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`societes_has_factures`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`societes_has_factures` (
+  `societes_idsocietes` INT NOT NULL,
+  `factures_idfactures` INT NOT NULL,
+  PRIMARY KEY (`societes_idsocietes`, `factures_idfactures`),
+  INDEX `fk_SOCIETES_has_FACTURES_FACTURES1_idx` (`factures_idfactures` ASC),
+  INDEX `fk_SOCIETES_has_FACTURES_SOCIETES1_idx` (`societes_idsocietes` ASC),
+  CONSTRAINT `fk_SOCIETES_has_FACTURES_SOCIETES1`
+    FOREIGN KEY (`societes_idsocietes`)
+    REFERENCES `COGIPapp`.`societes` (`idsocietes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_SOCIETES_has_FACTURES_FACTURES1`
+    FOREIGN KEY (`factures_idfactures`)
+    REFERENCES `COGIPapp`.`factures` (`idfactures`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Structure de la table `PERSONNES_has_SOCIETES`
---
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`societes_has_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`societes_has_type` (
+  `societes_idsocietes` INT NOT NULL,
+  `type_idtype` INT NOT NULL,
+  PRIMARY KEY (`societes_idsocietes`, `type_idtype`),
+  INDEX `fk_SOCIETES_has_TYPE_TYPE1_idx` (`type_idtype` ASC),
+  INDEX `fk_SOCIETES_has_TYPE_SOCIETES1_idx` (`societes_idsocietes` ASC),
+  CONSTRAINT `fk_SOCIETES_has_TYPE_SOCIETES1`
+    FOREIGN KEY (`societes_idsocietes`)
+    REFERENCES `COGIPapp`.`societes` (`idsocietes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_SOCIETES_has_TYPE_TYPE1`
+    FOREIGN KEY (`type_idtype`)
+    REFERENCES `COGIPapp`.`type` (`idtype`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE TABLE `PERSONNES_has_SOCIETES` (
-  `PERSONNES_idPERSONNES` int(11) NOT NULL,
-  `SOCIETES_idSOCIETES` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `COGIPapp`.`type_has_factures`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `COGIPapp`.`type_has_factures` (
+  `type_idtype` INT NOT NULL,
+  `factures_idfactures` INT NOT NULL,
+  PRIMARY KEY (`type_idtype`, `factures_idfactures`),
+  INDEX `fk_TYPE_has_FACTURES_FACTURES1_idx` (`factures_idfactures` ASC),
+  INDEX `fk_TYPE_has_FACTURES_TYPE1_idx` (`type_idtype` ASC),
+  CONSTRAINT `fk_TYPE_has_FACTURES_TYPE1`
+    FOREIGN KEY (`type_idtype`)
+    REFERENCES `COGIPapp`.`type` (`idtype`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_TYPE_has_FACTURES_FACTURES1`
+    FOREIGN KEY (`factures_idfactures`)
+    REFERENCES `COGIPapp`.`factures` (`idfactures`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Structure de la table `SOCIETES`
---
 
-CREATE TABLE `SOCIETES` (
-  `idSOCIETES` int(11) NOT NULL,
-  `nom_societe` varchar(45) DEFAULT NULL,
-  `adresse_societe` varchar(45) DEFAULT NULL,
-  `pays_societe` varchar(45) DEFAULT NULL,
-  `TVA_societe` varchar(45) DEFAULT NULL,
-  `telephone_societe` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `SOCIETES_has_FACTURES`
---
-
-CREATE TABLE `SOCIETES_has_FACTURES` (
-  `SOCIETES_idSOCIETES` int(11) NOT NULL,
-  `FACTURES_idFACTURES` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `SOCIETES_has_TYPE`
---
-
-CREATE TABLE `SOCIETES_has_TYPE` (
-  `SOCIETES_idSOCIETES` int(11) NOT NULL,
-  `TYPE_idTYPE` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `TYPE`
---
-
-CREATE TABLE `TYPE` (
-  `idTYPE` int(11) NOT NULL,
-  `type_societe` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `TYPE_has_FACTURES`
---
-
-CREATE TABLE `TYPE_has_FACTURES` (
-  `TYPE_idTYPE` int(11) NOT NULL,
-  `FACTURES_idFACTURES` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Index pour les tables exportées
---
-
---
--- Index pour la table `FACTURES`
---
-ALTER TABLE `FACTURES`
-  ADD PRIMARY KEY (`idFACTURES`);
-
---
--- Index pour la table `PERSONNES`
---
-ALTER TABLE `PERSONNES`
-  ADD PRIMARY KEY (`idPERSONNES`);
-
---
--- Index pour la table `PERSONNES_has_FACTURES`
---
-ALTER TABLE `PERSONNES_has_FACTURES`
-  ADD PRIMARY KEY (`PERSONNES_idPERSONNES`,`FACTURES_idFACTURES`),
-  ADD KEY `fk_PERSONNES_has_FACTURES_FACTURES1_idx` (`FACTURES_idFACTURES`),
-  ADD KEY `fk_PERSONNES_has_FACTURES_PERSONNES_idx` (`PERSONNES_idPERSONNES`);
-
---
--- Index pour la table `PERSONNES_has_SOCIETES`
---
-ALTER TABLE `PERSONNES_has_SOCIETES`
-  ADD PRIMARY KEY (`PERSONNES_idPERSONNES`,`SOCIETES_idSOCIETES`),
-  ADD KEY `fk_PERSONNES_has_SOCIETES_SOCIETES1_idx` (`SOCIETES_idSOCIETES`),
-  ADD KEY `fk_PERSONNES_has_SOCIETES_PERSONNES1_idx` (`PERSONNES_idPERSONNES`);
-
---
--- Index pour la table `SOCIETES`
---
-ALTER TABLE `SOCIETES`
-  ADD PRIMARY KEY (`idSOCIETES`);
-
---
--- Index pour la table `SOCIETES_has_FACTURES`
---
-ALTER TABLE `SOCIETES_has_FACTURES`
-  ADD PRIMARY KEY (`SOCIETES_idSOCIETES`,`FACTURES_idFACTURES`),
-  ADD KEY `fk_SOCIETES_has_FACTURES_FACTURES1_idx` (`FACTURES_idFACTURES`),
-  ADD KEY `fk_SOCIETES_has_FACTURES_SOCIETES1_idx` (`SOCIETES_idSOCIETES`);
-
---
--- Index pour la table `SOCIETES_has_TYPE`
---
-ALTER TABLE `SOCIETES_has_TYPE`
-  ADD PRIMARY KEY (`SOCIETES_idSOCIETES`,`TYPE_idTYPE`),
-  ADD KEY `fk_SOCIETES_has_TYPE_TYPE1_idx` (`TYPE_idTYPE`),
-  ADD KEY `fk_SOCIETES_has_TYPE_SOCIETES1_idx` (`SOCIETES_idSOCIETES`);
-
---
--- Index pour la table `TYPE`
---
-ALTER TABLE `TYPE`
-  ADD PRIMARY KEY (`idTYPE`);
-
---
--- Index pour la table `TYPE_has_FACTURES`
---
-ALTER TABLE `TYPE_has_FACTURES`
-  ADD PRIMARY KEY (`TYPE_idTYPE`,`FACTURES_idFACTURES`),
-  ADD KEY `fk_TYPE_has_FACTURES_FACTURES1_idx` (`FACTURES_idFACTURES`),
-  ADD KEY `fk_TYPE_has_FACTURES_TYPE1_idx` (`TYPE_idTYPE`);
-
---
--- AUTO_INCREMENT pour les tables exportées
---
-
---
--- AUTO_INCREMENT pour la table `FACTURES`
---
-ALTER TABLE `FACTURES`
-  MODIFY `idFACTURES` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `PERSONNES`
---
-ALTER TABLE `PERSONNES`
-  MODIFY `idPERSONNES` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `SOCIETES`
---
-ALTER TABLE `SOCIETES`
-  MODIFY `idSOCIETES` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `TYPE`
---
-ALTER TABLE `TYPE`
-  MODIFY `idTYPE` int(11) NOT NULL AUTO_INCREMENT;
---
--- Contraintes pour les tables exportées
---
-
---
--- Contraintes pour la table `PERSONNES_has_FACTURES`
---
-ALTER TABLE `PERSONNES_has_FACTURES`
-  ADD CONSTRAINT `fk_PERSONNES_has_FACTURES_FACTURES1` FOREIGN KEY (`FACTURES_idFACTURES`) REFERENCES `FACTURES` (`idFACTURES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_PERSONNES_has_FACTURES_PERSONNES` FOREIGN KEY (`PERSONNES_idPERSONNES`) REFERENCES `PERSONNES` (`idPERSONNES`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Contraintes pour la table `PERSONNES_has_SOCIETES`
---
-ALTER TABLE `PERSONNES_has_SOCIETES`
-  ADD CONSTRAINT `fk_PERSONNES_has_SOCIETES_PERSONNES1` FOREIGN KEY (`PERSONNES_idPERSONNES`) REFERENCES `PERSONNES` (`idPERSONNES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_PERSONNES_has_SOCIETES_SOCIETES1` FOREIGN KEY (`SOCIETES_idSOCIETES`) REFERENCES `SOCIETES` (`idSOCIETES`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Contraintes pour la table `SOCIETES_has_FACTURES`
---
-ALTER TABLE `SOCIETES_has_FACTURES`
-  ADD CONSTRAINT `fk_SOCIETES_has_FACTURES_FACTURES1` FOREIGN KEY (`FACTURES_idFACTURES`) REFERENCES `FACTURES` (`idFACTURES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_SOCIETES_has_FACTURES_SOCIETES1` FOREIGN KEY (`SOCIETES_idSOCIETES`) REFERENCES `SOCIETES` (`idSOCIETES`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Contraintes pour la table `SOCIETES_has_TYPE`
---
-ALTER TABLE `SOCIETES_has_TYPE`
-  ADD CONSTRAINT `fk_SOCIETES_has_TYPE_SOCIETES1` FOREIGN KEY (`SOCIETES_idSOCIETES`) REFERENCES `SOCIETES` (`idSOCIETES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_SOCIETES_has_TYPE_TYPE1` FOREIGN KEY (`TYPE_idTYPE`) REFERENCES `TYPE` (`idTYPE`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Contraintes pour la table `TYPE_has_FACTURES`
---
-ALTER TABLE `TYPE_has_FACTURES`
-  ADD CONSTRAINT `fk_TYPE_has_FACTURES_FACTURES1` FOREIGN KEY (`FACTURES_idFACTURES`) REFERENCES `FACTURES` (`idFACTURES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_TYPE_has_FACTURES_TYPE1` FOREIGN KEY (`TYPE_idTYPE`) REFERENCES `TYPE` (`idTYPE`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

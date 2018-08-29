@@ -1,0 +1,264 @@
+-- phpMyAdmin SQL Dump
+-- version 4.5.4.1deb2ubuntu2
+-- http://www.phpmyadmin.net
+--
+-- Client :  localhost
+-- Généré le :  Mer 29 Août 2018 à 11:31
+-- Version du serveur :  5.7.23-0ubuntu0.16.04.1
+-- Version de PHP :  7.0.30-0ubuntu0.16.04.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données :  `COGIPapp`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `FACTURES`
+--
+
+CREATE TABLE `FACTURES` (
+  `idFACTURES` int(11) NOT NULL,
+  `numero-facture` varchar(45) DEFAULT NULL,
+  `date-facture` varchar(45) DEFAULT NULL,
+  `objet-facture` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `PERSONNES`
+--
+
+CREATE TABLE `PERSONNES` (
+  `idPERSONNES` int(11) NOT NULL,
+  `nom_has_personne` varchar(45) DEFAULT NULL,
+  `prenom_has_personne` varchar(45) DEFAULT NULL,
+  `telephone_has_personne` varchar(45) DEFAULT NULL,
+  `email_has_personne` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `PERSONNES_has_FACTURES`
+--
+
+CREATE TABLE `PERSONNES_has_FACTURES` (
+  `PERSONNES_idPERSONNES` int(11) NOT NULL,
+  `FACTURES_idFACTURES` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `PERSONNES_has_SOCIETES`
+--
+
+CREATE TABLE `PERSONNES_has_SOCIETES` (
+  `PERSONNES_idPERSONNES` int(11) NOT NULL,
+  `SOCIETES_idSOCIETES` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `SOCIETES`
+--
+
+CREATE TABLE `SOCIETES` (
+  `idSOCIETES` int(11) NOT NULL,
+  `nom_societe` varchar(45) DEFAULT NULL,
+  `adresse_societe` varchar(45) DEFAULT NULL,
+  `pays_societe` varchar(45) DEFAULT NULL,
+  `TVA_societe` varchar(45) DEFAULT NULL,
+  `telephone_societe` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `SOCIETES_has_FACTURES`
+--
+
+CREATE TABLE `SOCIETES_has_FACTURES` (
+  `SOCIETES_idSOCIETES` int(11) NOT NULL,
+  `FACTURES_idFACTURES` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `SOCIETES_has_TYPE`
+--
+
+CREATE TABLE `SOCIETES_has_TYPE` (
+  `SOCIETES_idSOCIETES` int(11) NOT NULL,
+  `TYPE_idTYPE` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `TYPE`
+--
+
+CREATE TABLE `TYPE` (
+  `idTYPE` int(11) NOT NULL,
+  `type_societe` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `TYPE_has_FACTURES`
+--
+
+CREATE TABLE `TYPE_has_FACTURES` (
+  `TYPE_idTYPE` int(11) NOT NULL,
+  `FACTURES_idFACTURES` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `FACTURES`
+--
+ALTER TABLE `FACTURES`
+  ADD PRIMARY KEY (`idFACTURES`);
+
+--
+-- Index pour la table `PERSONNES`
+--
+ALTER TABLE `PERSONNES`
+  ADD PRIMARY KEY (`idPERSONNES`);
+
+--
+-- Index pour la table `PERSONNES_has_FACTURES`
+--
+ALTER TABLE `PERSONNES_has_FACTURES`
+  ADD PRIMARY KEY (`PERSONNES_idPERSONNES`,`FACTURES_idFACTURES`),
+  ADD KEY `fk_PERSONNES_has_FACTURES_FACTURES1_idx` (`FACTURES_idFACTURES`),
+  ADD KEY `fk_PERSONNES_has_FACTURES_PERSONNES_idx` (`PERSONNES_idPERSONNES`);
+
+--
+-- Index pour la table `PERSONNES_has_SOCIETES`
+--
+ALTER TABLE `PERSONNES_has_SOCIETES`
+  ADD PRIMARY KEY (`PERSONNES_idPERSONNES`,`SOCIETES_idSOCIETES`),
+  ADD KEY `fk_PERSONNES_has_SOCIETES_SOCIETES1_idx` (`SOCIETES_idSOCIETES`),
+  ADD KEY `fk_PERSONNES_has_SOCIETES_PERSONNES1_idx` (`PERSONNES_idPERSONNES`);
+
+--
+-- Index pour la table `SOCIETES`
+--
+ALTER TABLE `SOCIETES`
+  ADD PRIMARY KEY (`idSOCIETES`);
+
+--
+-- Index pour la table `SOCIETES_has_FACTURES`
+--
+ALTER TABLE `SOCIETES_has_FACTURES`
+  ADD PRIMARY KEY (`SOCIETES_idSOCIETES`,`FACTURES_idFACTURES`),
+  ADD KEY `fk_SOCIETES_has_FACTURES_FACTURES1_idx` (`FACTURES_idFACTURES`),
+  ADD KEY `fk_SOCIETES_has_FACTURES_SOCIETES1_idx` (`SOCIETES_idSOCIETES`);
+
+--
+-- Index pour la table `SOCIETES_has_TYPE`
+--
+ALTER TABLE `SOCIETES_has_TYPE`
+  ADD PRIMARY KEY (`SOCIETES_idSOCIETES`,`TYPE_idTYPE`),
+  ADD KEY `fk_SOCIETES_has_TYPE_TYPE1_idx` (`TYPE_idTYPE`),
+  ADD KEY `fk_SOCIETES_has_TYPE_SOCIETES1_idx` (`SOCIETES_idSOCIETES`);
+
+--
+-- Index pour la table `TYPE`
+--
+ALTER TABLE `TYPE`
+  ADD PRIMARY KEY (`idTYPE`);
+
+--
+-- Index pour la table `TYPE_has_FACTURES`
+--
+ALTER TABLE `TYPE_has_FACTURES`
+  ADD PRIMARY KEY (`TYPE_idTYPE`,`FACTURES_idFACTURES`),
+  ADD KEY `fk_TYPE_has_FACTURES_FACTURES1_idx` (`FACTURES_idFACTURES`),
+  ADD KEY `fk_TYPE_has_FACTURES_TYPE1_idx` (`TYPE_idTYPE`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `FACTURES`
+--
+ALTER TABLE `FACTURES`
+  MODIFY `idFACTURES` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `PERSONNES`
+--
+ALTER TABLE `PERSONNES`
+  MODIFY `idPERSONNES` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `SOCIETES`
+--
+ALTER TABLE `SOCIETES`
+  MODIFY `idSOCIETES` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `TYPE`
+--
+ALTER TABLE `TYPE`
+  MODIFY `idTYPE` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `PERSONNES_has_FACTURES`
+--
+ALTER TABLE `PERSONNES_has_FACTURES`
+  ADD CONSTRAINT `fk_PERSONNES_has_FACTURES_FACTURES1` FOREIGN KEY (`FACTURES_idFACTURES`) REFERENCES `FACTURES` (`idFACTURES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_PERSONNES_has_FACTURES_PERSONNES` FOREIGN KEY (`PERSONNES_idPERSONNES`) REFERENCES `PERSONNES` (`idPERSONNES`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `PERSONNES_has_SOCIETES`
+--
+ALTER TABLE `PERSONNES_has_SOCIETES`
+  ADD CONSTRAINT `fk_PERSONNES_has_SOCIETES_PERSONNES1` FOREIGN KEY (`PERSONNES_idPERSONNES`) REFERENCES `PERSONNES` (`idPERSONNES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_PERSONNES_has_SOCIETES_SOCIETES1` FOREIGN KEY (`SOCIETES_idSOCIETES`) REFERENCES `SOCIETES` (`idSOCIETES`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `SOCIETES_has_FACTURES`
+--
+ALTER TABLE `SOCIETES_has_FACTURES`
+  ADD CONSTRAINT `fk_SOCIETES_has_FACTURES_FACTURES1` FOREIGN KEY (`FACTURES_idFACTURES`) REFERENCES `FACTURES` (`idFACTURES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_SOCIETES_has_FACTURES_SOCIETES1` FOREIGN KEY (`SOCIETES_idSOCIETES`) REFERENCES `SOCIETES` (`idSOCIETES`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `SOCIETES_has_TYPE`
+--
+ALTER TABLE `SOCIETES_has_TYPE`
+  ADD CONSTRAINT `fk_SOCIETES_has_TYPE_SOCIETES1` FOREIGN KEY (`SOCIETES_idSOCIETES`) REFERENCES `SOCIETES` (`idSOCIETES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_SOCIETES_has_TYPE_TYPE1` FOREIGN KEY (`TYPE_idTYPE`) REFERENCES `TYPE` (`idTYPE`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `TYPE_has_FACTURES`
+--
+ALTER TABLE `TYPE_has_FACTURES`
+  ADD CONSTRAINT `fk_TYPE_has_FACTURES_FACTURES1` FOREIGN KEY (`FACTURES_idFACTURES`) REFERENCES `FACTURES` (`idFACTURES`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_TYPE_has_FACTURES_TYPE1` FOREIGN KEY (`TYPE_idTYPE`) REFERENCES `TYPE` (`idTYPE`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

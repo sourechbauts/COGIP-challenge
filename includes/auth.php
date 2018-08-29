@@ -7,4 +7,8 @@ function checkAuth($level) {
   return $_SESSION['user_auth_level'] >= $level;
 }
 
+function guard($level) {
+  if(!checkAuth($level)) redirect('login');
+}
+
 ?>

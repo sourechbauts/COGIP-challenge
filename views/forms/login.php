@@ -12,6 +12,6 @@ $view_data['content'] = ob_get_contents();
 
 ob_end_clean();
 
-require PATH_VIEWS."/layout.php";
+require VIEWS."/layout.php";
 
 ?>

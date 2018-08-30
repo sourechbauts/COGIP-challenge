@@ -1,5 +1,5 @@
 RewriteEngine On
 
 RewriteBase /COGIP-challenge
-RewriteCond %{REQUEST_URI} !^/COGIP-challenge/(assets|models|src)
-RewriteRule ^(.+)$ router.php [QSA,L]
+RewriteCond %{REQUEST_URI} !^/COGIP-challenge/(assets|models|src){1}
+RewriteRule ^ router.php [QSA,L]

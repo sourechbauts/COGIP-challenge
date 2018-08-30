@@ -1,19 +1,16 @@
 <?php
 
-function showForm() {
-  require PATH_VIEWS."/forms/login.php";
+class LoginController
+{
+  public function showForm() {
+    view('forms/login');
+  }
+
+  public function login() {
+    if(!post_isset(['login_user', 'login_pwd'])) redirect('login');
+    $content = '<h2>process login</h2>';
+    view('layout', array('content' => $content));
+  }
 }
-
-function processLogin() {
-  if(!isset($_POST['login_user']) || !isset($_POST['login_pw'])) exit('missing data');
-  else exit('ok');
-  // If success
-  //require PATH_VIEWS."/home";
-  // If failure
-  // Set sessions variables
-  //require PATH_VIEWS."/login";
-}
-
-
 
 ?>

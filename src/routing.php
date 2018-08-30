@@ -11,7 +11,8 @@ function createRegex($text) {
   return $text;
 }
 
-function route($method, $regex, $actual_url, $controller, $function) {
+
+function route($method, $regex, $controller, $function) {
   // If we don't have the right method, skip the regex
   if($_SERVER["REQUEST_METHOD"] !== $method) return;
   // Remove the root part of the URI so we only have the request

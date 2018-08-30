@@ -8,7 +8,8 @@ class InvoiceController
 
   public function index() {
     $view_data['content'] = '<p>Index from php</p>';
-    require VIEWS."/layout.php";
+    // require VIEWS."/layout.php";
+    view('layout', array('content' => $view_data['content']));
   }
 
   public function indexByCompany($company) {
@@ -17,7 +18,7 @@ class InvoiceController
   }
 
   public function add() {
-    
+
   }
 }
 

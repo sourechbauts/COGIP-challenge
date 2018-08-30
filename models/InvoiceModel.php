@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__."/../includes/database.php";
-
 class Model
 {
   protected $db;
@@ -21,10 +19,22 @@ class InvoiceModel extends Model
     $data = $request->fetchAll(PDO::FETCH_ASSOC);
     return $data;
   }
+
+  public function validate($data) {
+    if(isset($data['id'])) {
+      // SQL query to check if id exists
+    }
+    if(isset($data['number'])) {
+      // Check valid number
+      // SQL query for unique number
+    }
+    if(isset($data['date'])) {
+      // Check valid date
+    }
+    if(isset($data['object'])) {
+      // Check valid object
+    }
+  }
 }
-
-$invoice = new InvoiceModel($db);
-
-var_dump($invoice->all());
 
 ?>

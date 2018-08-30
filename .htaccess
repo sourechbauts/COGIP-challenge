@@ -2,15 +2,14 @@ RewriteEngine On
 
 RewriteBase /COGIP-challenge
 # LOGIN
-RewriteRule ^login/?$ router.php?action=login
+#RewriteRule ^login/?$ router.php?action=login
 # FACTURES
-RewriteRule ^factures/?$ router.php?data=invoice&action=index
-RewriteRule ^factures/societe/([0-9]+)/?$ router.php?data=invoice&action=index&filter=$1
-RewriteRule ^factures/([0-9]+)/?$ router.php?data=invoice&action=show&id=$1
-
-#RewriteBase /COGIP-challenge
+#RewriteRule ^factures/?$ router.php?data=invoice&action=index
+#RewriteRule ^factures/societe/([0-9]+)/?$ router.php?data=invoice&action=index&filter=$1
+#RewriteRule ^factures/([0-9]+)/?$ router.php?data=invoice&action=show&id=$1
 
 # RewriteCond %{REQUEST_FILENAME} !-d
 # RewriteCond %{REQUEST_FILENAME} !-f
+RewriteBase /COGIP-challenge
 RewriteCond %{REQUEST_URI} !^/COGIP-challenge/assets
 RewriteRule ^(.+)$ router.php [QSA,L]

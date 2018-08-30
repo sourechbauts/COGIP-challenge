@@ -21,13 +21,26 @@ echo '<p>URI: '.$actual_url.'</p>';
 echo '<h4>GET</h4><pre>'.print_r($_GET, TRUE).'</pre>';
 echo '<h4>POST</h4><pre>'.print_r($_POST, TRUE).'</pre>';
 // echo '<h4>SERVER</h4><pre>'.print_r($_SERVER, TRUE).'</pre>';
+echo '<h4>URL</h4><p>'.$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'</p>';
+
+function createRegex($text) {
+  $from = array('/', '#');
+  $to = array('\/', '([0-9]+)');
+
+  $text = trim($text, '/');
+  $text = str_replace($from, $to, $text);
+  $text = '/^'.$text.'\/?$/';
+
+  return $text;
+}
 
 function route($method, $regex, $actual_url, $controller, $function) {
   // If we don't have the right method, skip the regex
   if($_SERVER["REQUEST_METHOD"] !== $method) return;
 
+  $regex = createRegex($regex);
+
   if(preg_match($regex, $actual_url, $args)) {
-    echo 'Call function '.$function.' from '.$controller;
     // preg_match puts the matched string in the first element of the array, so we remove it
     array_shift($args);
     // Call the controller (autoloaded)
@@ -39,9 +52,12 @@ function route($method, $regex, $actual_url, $controller, $function) {
 }
 
 // route('GET', '/^test\/([0-9]+)\/([0-9]+)\/?$/', $actual_url, 'InvoiceController', 'index');
-route('GET', '/^factures\/([0-9]+)\/?$/', $actual_url, 'InvoiceController', 'show');
-route('GET', '/^factures\/societe\/([0-9]+)\/?$/', $actual_url, 'InvoiceController', 'indexByCompany');
-route('GET', '/^factures\/?$/', $actual_url, 'InvoiceController', 'index');
+// route('GET', '/^factures\/([0-9]+)\/?$/', $actual_url, 'InvoiceController', 'show');
+// route('GET', '/^factures\/societe\/([0-9]+)\/?$/', $actual_url, 'InvoiceController', 'indexByCompany');
+// route('GET', '/^factures\/?$/', $actual_url, 'InvoiceController', 'index');
 
+route('GET', 'factures/#', $actual_url, 'InvoiceController', 'show');
+route('GET', 'factures/societe/#', $actual_url, 'InvoiceController', 'indexByCompany');
+route('GET', 'factures', $actual_url, 'InvoiceController', 'index');
 
 ?>

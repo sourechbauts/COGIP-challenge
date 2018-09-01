@@ -1,11 +1,13 @@
 <?php
 
 spl_autoload_register(function($name){
-  include __DIR__."/../controllers/".$name.".php";
+  $file = __DIR__."/../controllers/".$name.".php";
+  if(file_exists($file)) include $file;
 });
 
 spl_autoload_register(function($name) {
-  include __DIR__."/../models/".$name.".php";
+  $file = __DIR__."/../models/".$name.".php";
+  if(file_exists($file)) include $file;
 });
 
 function view($path, $view_data = NULL) {
@@ -13,7 +15,7 @@ function view($path, $view_data = NULL) {
 
   // The php extension is optional in the argument
   if(strpos($path, '.php') === FALSE) $path = $path.'.php';
-  // Remove any / before the file name, as the Path constants already have a trailing slash
+  // Remove any "/" before the file name, as the Path constants all have a trailing slash
   $path = ltrim($path, '/');
   require VIEWS.$path;
   exit;

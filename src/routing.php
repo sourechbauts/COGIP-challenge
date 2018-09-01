@@ -12,8 +12,8 @@ function createRegex($text) {
 }
 
 
-function route($method, $regex, $controller, $function) {
-  // If we don't have the right method, skip the regex
+function route($method, $regex, $controller, $function, ...$parameters) {
+  // If we don't have the right method, skip this route
   if($_SERVER["REQUEST_METHOD"] !== $method) return;
   // Remove the root part of the URI so we only have the request
   $url = str_replace(ROOT, "", $_SERVER["REQUEST_URI"]);
@@ -26,7 +26,7 @@ function route($method, $regex, $controller, $function) {
     // Call the controller (autoloaded)
     $controller = new $controller();
     // Call the method with unpacked arguments
-    $controller->$function(...$args);
+    $controller->$function(...$args, ...$parameters);
     exit;
   }
 }

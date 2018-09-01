@@ -36,6 +36,9 @@ route('GET', 'fournisseurs', 'CompanyController', 'indexByType', 0);
 route('GET', 'clients', 'CompanyController', 'indexByType', 1);
 route('GET', 'company-details/#', 'CompanyController', 'show');
 
+//ADMIN PANEL
+route('GET', 'admin', 'AdminPanelController', 'home');
+
 echo '<h1>¯\_(ツ)_/¯</h1>';
 
 ?>

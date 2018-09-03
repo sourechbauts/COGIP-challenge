@@ -20,12 +20,13 @@ function view($path, $view_data = NULL) {
   require VIEWS.$path;
   exit;
 }
-
+ // Mostly used in the views, generates a URL
 function url($link) {
   $link = ltrim($link, '/');
   echo ROOT.$link;
 }
 
+// Mostly used in controllers, redirects to a specific page
 function redirect($path) {
   $path = ltrim($path, '/');
   header('Location: '.ROOT.$path);

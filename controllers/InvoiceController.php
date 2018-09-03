@@ -29,7 +29,8 @@ class InvoiceController
   }
 
   public function add() {
-
+    $invoiceModel = new InvoiceModel();
+    $result = $invoiceModel->create(['number'=>'prout', 'object'=>'wesh wesh']);
   }
 }
 

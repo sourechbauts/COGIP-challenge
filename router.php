@@ -23,6 +23,8 @@ route('GET', 'factures', 'InvoiceController', 'index');
 // route('GET', '/^factures\/?$/', $actual_url, 'InvoiceController', 'index');
 route('GET', 'invoice-details/#', 'InvoiceController', 'show');
 
+route('GET', 'facture/add', 'InvoiceController', 'add');
+
 // LOGIN
 route('GET', 'login', 'LoginController', 'showForm');
 route('POST', 'login', 'LoginController', 'login');

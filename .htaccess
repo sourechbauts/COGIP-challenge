@@ -1,0 +1,5 @@
+RewriteEngine On
+
+RewriteBase /COGIP-challenge
+RewriteCond %{REQUEST_URI} !^/COGIP-challenge/assets
+RewriteRule ^ router.php [QSA,L]

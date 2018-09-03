@@ -41,4 +41,7 @@ route('GET', 'admin', 'AdminPanelController', 'home');
 
 echo '<h1>¯\_(ツ)_/¯</h1>';
 
+$defaultController = new LoginController();
+$defaultController->showForm();
+
 ?>

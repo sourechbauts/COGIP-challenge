@@ -14,37 +14,33 @@ class InvoiceModel extends Model
 
   public function create($data) {
     $data = $this->validate($data);
-    var_dump($data);
+    return $data;
   }
 
   public function validate($data) {
     if(isset($data['id'])) {
-      // SQL query to check if id exists
       if($this->byId($data['id']) === FALSE) {
-        $data['id']['valid'] = FALSE;
-        $data['id']['error'] = "Doesn't exist";
+        $data['errors']['id'] = "Doesn't exist";
       }
-      else $data['id']['valid'] = TRUE;
     }
     if(isset($data['number'])) {
       // TODO: SQL query for unique number ?
-      if(intval($data['number']) < 1) {
-        $data['number']['valid'] = FALSE;
-        $data['number']['error'] = "Invalid number";
+      if(empty($data['number'])) $data['errors']['number'] = "Empty number";
+      elseif(intval($data['number']) < 1) {
+        $data['errors']['number'] = "Invalid number";
       }
-      else $data['number']['valid'] = TRUE;
     }
     if(isset($data['date'])) {
-      // Check valid date
-      $data['date']['valid'] = TRUE;
+      list($year, $month, $day) = explode('-', $data['date']);
+      if(!checkdate($month, $day, $year)) $data['errors']['date'] = "Invalid date";
+      elseif($year < 2000) $data['errors']['date'] = "Invalid date";
+      elseif($year > date("Y")) $data['errors']['date'] = "Invalid date";
     }
     if(isset($data['object'])) {
-      // Check valid object
-      if(strlen($data['object']) > 200) {
-        $data['object']['valid'] = FALSE;
-        $data['object']['error'] = "Too long object";
+      if(empty($data['object'])) $data['errors']['object'] = "Empty object";
+      elseif(strlen($data['object']) > 200) {
+        $data['errors']['object'] = "Too long object";
       }
-      else $data['object']['valid'] = TRUE;
     }
     return $data;
   }

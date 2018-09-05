@@ -25,12 +25,22 @@ class InvoiceController
   public function show($id) {
     $invoices = new $this->model();
     $data = $invoices->byId($id);
-    var_dump($data);
+  }
+
+  public function addForm() {
+    view('forms/invoice.add');
   }
 
   public function add() {
+    if(!post_isset(['number', 'date', 'object'])) redirect('home');
+    var_dump($_POST['date']);
+
     $invoiceModel = new InvoiceModel();
-    $result = $invoiceModel->create(['number'=>'prout', 'object'=>'wesh wesh']);
+    $result = $invoiceModel->create($_POST);
+    if(isset($result['errors'])) {
+      var_dump($result['errors']);
+      exit;
+    } else echo 'ok';
   }
 }
 

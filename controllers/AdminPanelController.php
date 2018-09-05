@@ -9,6 +9,9 @@ class AdminPanelController
     // $company = new CompanyModel();
     $invoice_data = $invoice->lastFive();
     var_dump($invoice_data);
+    $company = new CompanyModel;
+    $company_data = $company->lastFive();
+    
   }
 }
 

@@ -28,6 +28,7 @@ class Model
   public function lastFive() {
     $sql = 'SELECT * FROM '.$this->tableName.' ORDER BY '.$this->sortField.' DESC LIMIT 5';
     $request = $this->db->query($sql);
+    if(!$request) return [];
     $data = $request->fetchAll(PDO::FETCH_ASSOC);
     return $data;
   }

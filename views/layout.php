@@ -9,6 +9,15 @@
   <title>COGIP</title>
 </head>
 <body>
+  <div class="ui attached stackable menu">
+    <div class="ui container">
+      <a href="<?php url('admin'); ?>" class="item">Accueil</a>
+      <a href="<?php url('factures'); ?>" class="item">Factures</a>
+      <a href="<?php url('societes'); ?>" class="item">Sociétés</a>
+      <a href="<?php url('logout'); ?>" class="right item">Logout</a>
+    </div>
+  </div>
+
   <div class="ui container">
     <?php
 

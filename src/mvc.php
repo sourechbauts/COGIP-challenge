@@ -20,6 +20,12 @@ function view($path, $view_data = NULL) {
   require VIEWS.$path;
   exit;
 }
+
+function old($key, $view_data) {
+  if(isset($view_data['old'][$key])) echo $view_data['old'][$key];
+  else echo "nope";
+}
+
  // Mostly used in the views, generates a URL
 function url($link) {
   $link = ltrim($link, '/');

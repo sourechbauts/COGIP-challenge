@@ -34,14 +34,19 @@ class InvoiceController
 
   public function add() {
     if(!post_isset(['number', 'date', 'object'])) redirect('home');
-    var_dump($_POST['date']);
 
     $invoiceModel = new InvoiceModel();
     $result = $invoiceModel->create($_POST);
-    if(isset($result['errors'])) {
-      var_dump($result['errors']);
-      exit;
-    } else echo 'ok';
+    if($result === TRUE) {
+      view('layout', ['content' => 'Success !']);
+    }
+    else {
+      view('forms/invoice.add', ['old' => $result]);
+    }
+    // if(isset($result['errors'])) {
+    //   var_dump($result['errors']);
+    //   exit;
+    // } else echo 'ok';
   }
 }
 

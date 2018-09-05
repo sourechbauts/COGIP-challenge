@@ -14,6 +14,14 @@ class InvoiceModel extends Model
 
   public function create($data) {
     $data = $this->validate($data);
+    // if(isset($data['errors'])) var_dump($data['errors']);
+    // else echo "ok";
+    if(!isset($data['errors'])) {
+      $request = $this->db->prepare('INSERT INTO '.$this->tableName.'(numero, date_rec, objet) VALUES(?, ?, ?)');
+      $result = $request->execute(array($data['number'], $data['date'], $data['object']));
+      return $result;
+    }
+    // Return the data array on fail (it contains the input and the errors)
     return $data;
   }
 
@@ -24,15 +32,15 @@ class InvoiceModel extends Model
       }
     }
     if(isset($data['number'])) {
-      // TODO: SQL query for unique number ?
       if(empty($data['number'])) $data['errors']['number'] = "Empty number";
       elseif(intval($data['number']) < 1) {
         $data['errors']['number'] = "Invalid number";
       }
     }
     if(isset($data['date'])) {
-      list($year, $month, $day) = explode('-', $data['date']);
-      if(!checkdate($month, $day, $year)) $data['errors']['date'] = "Invalid date";
+      @list($year, $month, $day) = explode('-', $data['date']);
+      if(empty($data['date'])) $data['errors']['date'] = "Invalid date";
+      elseif(!checkdate($month, $day, $year)) $data['errors']['date'] = "Invalid date";
       elseif($year < 2000) $data['errors']['date'] = "Invalid date";
       elseif($year > date("Y")) $data['errors']['date'] = "Invalid date";
     }

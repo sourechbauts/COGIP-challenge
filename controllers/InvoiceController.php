@@ -25,6 +25,7 @@ class InvoiceController
   public function show($id) {
     $invoices = new $this->model();
     $data = $invoices->byId($id);
+    var_dump($data);
   }
 
   public function addForm() {
